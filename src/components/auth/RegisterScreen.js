@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from '../../Hooks/useForm';
 import { removeError, setError } from '../../actions/ui';
+import { startRegisterFirebase } from '../../actions/auth';
 
 
 export const RegisterScreen = () => {
@@ -13,9 +14,9 @@ export const RegisterScreen = () => {
 
     const [formValues, handleInputChange] = useForm({
         name: 'Diego',
-        email: 'dyeqos@gmail.com',
-        password: '123',
-        password2:'123',
+        email: 'dyq@gmail.com',
+        password: '123456',
+        password2:'123456',
     });
     
     const {name, email, password, password2} = formValues;
@@ -24,19 +25,20 @@ export const RegisterScreen = () => {
         e.preventDefault();
 
         if(isFormValid()){
-            //console.log('correcto')
+            console.log("entro")
+            dispatch( startRegisterFirebase(email, password, name) );
         }
     }
 
     const isFormValid = () => {
 
-        if( name.trim().length <= 2){
+        if( name.trim().length <= 3){
             dispatch( setError( 'Name is required' ));
             return false;
         } else if( !validator.isEmail( email )){
             dispatch( setError( 'Email invalid' ));
             return false;
-        } else if( password !== password2 || password.length <3){
+        } else if( password !== password2 || password.length < 6){
             dispatch( setError( 'Password invalid' ));
             return false;
         }
